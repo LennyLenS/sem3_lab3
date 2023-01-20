@@ -13,10 +13,10 @@ protected:
 		unsigned char height;
 		node* left;
 		node* right;
-		node(Type k) { 
-			key = k; 
-			left = right = 0; 
-			height = 1; 
+		node(Type k) {
+			key = k;
+			left = right = 0;
+			height = 1;
 		}
 	};
 	node* root;
@@ -141,7 +141,7 @@ protected:
 		}
 	}
 
-	int nodeget(Type k, node* p, Type &ans) {
+	int nodeget(Type k, node* p, Type& ans) {
 		if (p == nullptr) {
 			return 1;
 		}
@@ -189,16 +189,10 @@ public:
 	}
 
 
-	int get(Type k, Type &ret) {
-		if (find(k)) {
-			Type ans;
-			nodeget(k, this->root, ans);
-			ret = ans;
-			return 0;
-		}
-		else {
-			return 1;
-		}
+	Type get(Type k) {
+		Type ans;
+		nodeget(k, this->root, ans);
+		return ans;
 	}
 
 	int bin_search() {

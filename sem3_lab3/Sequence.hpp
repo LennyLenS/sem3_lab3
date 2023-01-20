@@ -18,6 +18,7 @@ public:
 	virtual void Set(Type item, int index) = 0;
 	virtual Sequence <Type>* Concat(Sequence <Type>* list) = 0;
 	virtual Sequence<Type>* GetCopy() = 0;
+	virtual void remove(int index) = 0;
 	//destructor
 	virtual ~Sequence() {}
 };

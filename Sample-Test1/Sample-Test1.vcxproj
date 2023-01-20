@@ -19,7 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{029eecb8-3feb-46c4-bb94-0c4931bdbd2b}</ProjectGuid>
+    <ProjectGuid>{7b3defca-0a8d-423e-aa2b-d4f0b7484c24}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <WindowsTargetPlatformVersion>10.0.19041.0</WindowsTargetPlatformVersion>
     <ConfigurationType>Application</ConfigurationType>
@@ -33,16 +33,16 @@
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros" />
   <ItemGroup>
-    <ClInclude Include="..\..\lab3.2\lab3.2\array_sequence.hpp" />
-    <ClInclude Include="..\..\lab3.2\lab3.2\avl.hpp" />
-    <ClInclude Include="..\..\lab3.2\lab3.2\dictionary.hpp" />
-    <ClInclude Include="..\..\lab3.2\lab3.2\dynamic_array.hpp" />
-    <ClInclude Include="..\..\lab3.2\lab3.2\Sequence.hpp" />
-    <ClInclude Include="graph.hpp" />
+    <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="graph.cpp" />
-    <ClCompile Include="main.cpp" />
+    <ClCompile Include="test.cpp" />
+    <ClCompile Include="pch.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

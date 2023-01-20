@@ -31,6 +31,7 @@ public:
 	void Set(Type item, int index) override;
 	ArraySequence<Type>* Concat(Sequence<Type>* list) override;
 	
+	void remove(int index) override;
 	//operators
 	Type& operator[] (int index);
 	//destructs
@@ -62,7 +63,14 @@ public:
 	}
 };
 
+template<typename Type>
+void ArraySequence<Type>::remove(int index) {
+	for (int i = index; i < this->GetLength() - 1; i++) {
+		this->Set(this->Get(i + 1), i);
+	}
 
+	this->arr->Resize(this->GetLength() - 1);
+}
 //constructs
 template<typename Type>
 ArraySequence<Type>::ArraySequence() {
