@@ -45,6 +45,26 @@ public:
 	}
 };
 
+template <typename Tweight>
+class Path {
+public:
+	ArraySequence<Edge<Tweight> > path;
+	int add_edge(Edge<Tweight> a) {
+		if (path.GetLength() > 0 && path.GetLast().to_id != a.from_id && path.GetLast().to_id != a.to_id) {
+			return -1;
+		}
+		path.Append(a);
+		return 0;
+	}
+};
+template <class Tweight>
+std::ostream& operator<< (std::ostream& out, Path<Tweight>& a) {
+	for (int i = 0; i < a.path.GetLength(); ++i) {
+		auto b = a.path.Get(i);
+		cout << b.from_id << " " << b.to_id << " " << b.weight;
+	}
+	return out;
+}
 
 template<typename Tweight>
 class Graph {
@@ -98,10 +118,13 @@ public:
 		return 0;
 	}
 	
-	ArraySequence<Tweight> Dijkstra(int ver) {
+	Pair<ArraySequence<Tweight>, ArraySequence<Pair<int, int> > > Dijkstra(int ver) {
 		ArraySequence<Tweight> dist;
+		ArraySequence<Pair<int, int> > parent;  //id node - id edge
+		Pair<int, int> buf(-1, -1);
 		for (int i = 0; i < this->id_node; ++i) {
 			dist.Append(NMAX);
+			parent.Append(buf);
 		}
 		dist.Set(0, ver);
 		ArraySequence<bool> used;
@@ -130,26 +153,44 @@ public:
 				if (first != curr_ver) {
 					if (dist.Get(first) > dist.Get(curr_ver) + weight_) {
 						dist.Set(dist.Get(curr_ver) + weight_, first);
+						Pair<int, int> buf(curr_ver, this->nodes.Get(curr_ver).node_edges->Get(i));
+						parent.Set(buf, first);
 					}
 				}
 				else {
 					if (dist.Get(second) > dist.Get(curr_ver) + weight_) {
 						dist.Set(dist.Get(curr_ver) + weight_, second);
+						Pair<int, int> buf(curr_ver, this->nodes.Get(curr_ver).node_edges->Get(i));
+						parent.Set(buf, second);
 					}
 				}
 			}
 		}
-
-		return dist;
+		Pair<ArraySequence<Tweight>, ArraySequence<Pair<int, int> > > ans(dist, parent);
+		return ans;
 	}
 
-	Tweight find_dist(int from, int to) {
-		ArraySequence<Tweight> ans = Dijkstra(from);
-		return (ans.Get(to) == NMAX ? -1 : ans.Get(to));
+	Pair<Tweight, Path<Tweight> > find_dist(int from, int to) {
+		Pair<ArraySequence<Tweight>, ArraySequence<Pair<int, int> > > ans = Dijkstra(from);
+		Path<Tweight> path;
+		ArraySequence<Pair<int, int> > parent = ans.value;
+		int curr_id = to;
+		while (curr_id != -1) {
+			path.add_edge(edges.get(parent.Get(curr_id).value));
+			curr_id = parent.Get(curr_id).key;
+		}
+
+		if (ans.key.Get(to) == NMAX) {
+			Pair<Tweight, Path<Tweight> > res(-1, path);
+			return res;
+		}
+		Pair<Tweight, Path<Tweight> > res(ans.key.Get(to), path);
+		return res;
 	}
 
-	ArraySequence<Tweight> find_dist_to_all(int from) {
-		return Dijkstra(from);
+	ArraySequence<Tweight> find_dist_to_all(int from) {Dijkstra(from);
+		Pair<ArraySequence<Tweight>, ArraySequence<Pair<int, int> > > ans = Dijkstra(from);
+		return ans.key;
 	}
 
 	void dfs(int vertex, ArraySequence<int>& comp, ArraySequence<bool>& used) {

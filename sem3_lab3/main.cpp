@@ -126,21 +126,49 @@ int main() {
 							gr.Add_edge(from, to, weight);
 						}
 						if (!flag) {
+							std::ofstream out(buf.out_file_name);
 							if (buf.compon) {
 								auto a = gr.find_connectivity_component();
-								for (int i = 0; i < a.GetLength(); ++i) {
-									auto b = a.Get(i);
-									cout << "Component " << i << "\n";
-									cout << b << "\n";
+								if (buf.out_file && out.is_open()) {
+									for (int i = 0; i < a.GetLength(); ++i) {
+										auto b = a.Get(i);
+										out << "Component " << i << "\n";
+										out << b << "\n";
+									}
+								}
+								else {
+									for (int i = 0; i < a.GetLength(); ++i) {
+										auto b = a.Get(i);
+										cout << "Component " << i << "\n";
+										cout << b << "\n";
+									}
 								}
 							}
 							if (buf.dist_one) {
 								auto a = gr.find_dist(buf.vertex, buf.vertex2);
-								cout << a << "\n";
+								if (buf.out_file && out.is_open()) {
+									out << a.key << "\n";
+									for (int i = a.value.path.GetLength() - 1; i >= 0; --i) {
+										Edge<int> curr_edge = a.value.path.Get(i);
+										out << curr_edge.from_id << " " << curr_edge.to_id << " " << curr_edge.weight << "\n";
+									}
+								}
+								else {
+									cout << a.key << "\n";
+									for (int i = a.value.path.GetLength() - 1; i >= 0; --i) {
+										Edge<int> curr_edge = a.value.path.Get(i);
+										cout << curr_edge.from_id << " " << curr_edge.to_id << " " << curr_edge.weight << "\n";
+									}
+								}
 							}
 							if (buf.dist_all) {
 								auto a = gr.find_dist_to_all(buf.vertex);
-								cout << a << "\n";
+								if (buf.out_file && out.is_open()) {
+									out << a << "\n";
+								}
+								else {
+									cout << a << "\n";
+								}
 							}
 						}
 					}
@@ -166,20 +194,49 @@ int main() {
 					}
 					getline(cin, s);
 					if (!flag) {
+						std::ofstream out(buf.out_file_name);
 						if (buf.compon) {
 							auto a = gr.find_connectivity_component();
-							for (int i = 0; i < a.GetLength(); ++i) {
-								auto b = a.Get(i);
-								cout << b << "\n";
+							if (buf.out_file && out.is_open()) {
+								for (int i = 0; i < a.GetLength(); ++i) {
+									auto b = a.Get(i);
+									out << "Component " << i << "\n";
+									out << b << "\n";
+								}
+							}
+							else {
+								for (int i = 0; i < a.GetLength(); ++i) {
+									auto b = a.Get(i);
+									cout << "Component " << i << "\n";
+									cout << b << "\n";
+								}
 							}
 						}
 						if (buf.dist_one) {
 							auto a = gr.find_dist(buf.vertex, buf.vertex2);
-							cout << a << "\n";
+							if (buf.out_file && out.is_open()) {
+								out << a.key << "\n";
+								for (int i = a.value.path.GetLength() - 1; i >= 0; --i) {
+									Edge<int> curr_edge = a.value.path.Get(i);
+									out << curr_edge.from_id << " " << curr_edge.to_id << " " << curr_edge.weight << "\n";
+								}
+							}
+							else {
+								cout << a.key << "\n";
+								for (int i = a.value.path.GetLength() - 1; i >= 0; --i) {
+									Edge<int> curr_edge = a.value.path.Get(i);
+									cout << curr_edge.from_id << " " << curr_edge.to_id << " " << curr_edge.weight << "\n";
+								}
+							}
 						}
 						if (buf.dist_all) {
 							auto a = gr.find_dist_to_all(buf.vertex);
-							cout << a << "\n";
+							if (buf.out_file && out.is_open()) {
+								out << a << "\n";
+							}
+							else {
+								cout << a << "\n";
+							}
 						}
 					}
 				}
