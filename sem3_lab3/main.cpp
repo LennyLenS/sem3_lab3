@@ -109,16 +109,16 @@ int main() {
 			if (buf.run) {
 				if (buf.file) {
 					bool flag = false;
-					int ver, edg;
+					int count_ver, count_edg;
 					std::ifstream in(buf.file_name);
 
 					if (in.is_open()) {
-						in >> ver >> edg;
-						Graph<int> gr(ver);
-						for (int i = 0; i < edg; ++i) {
+						in >> count_ver >> count_edg;
+						Graph<int> gr(count_ver);
+						for (int i = 0; i < count_edg; ++i) {
 							int from, to, weight;
 							in >> from >> to >> weight;
-							if (from < 0 || from >= ver || to < 0 || to > ver || weight < 0) {
+							if (from < 0 || from >= count_ver || to < 0 || to > count_ver || weight < 0) {
 								cout << "Uncorrect data!!";
 								flag = true;
 								break;
@@ -148,15 +148,15 @@ int main() {
 								auto a = gr.find_dist(buf.vertex, buf.vertex2);
 								if (buf.out_file && out.is_open()) {
 									out << a.key << "\n";
-									for (int i = a.value.path.GetLength() - 1; i >= 0; --i) {
-										Edge<int> curr_edge = a.value.path.Get(i);
+									for (int i = a.value.Get_path().GetLength() - 1; i >= 0; --i) {
+										Edge<int> curr_edge = a.value.Get_path().Get(i);
 										out << curr_edge.from_id << " " << curr_edge.to_id << " " << curr_edge.weight << "\n";
 									}
 								}
 								else {
 									cout << a.key << "\n";
-									for (int i = a.value.path.GetLength() - 1; i >= 0; --i) {
-										Edge<int> curr_edge = a.value.path.Get(i);
+									for (int i = a.value.Get_path().GetLength() - 1; i >= 0; --i) {
+										Edge<int> curr_edge = a.value.Get_path().Get(i);
 										cout << curr_edge.from_id << " " << curr_edge.to_id << " " << curr_edge.weight << "\n";
 									}
 								}
@@ -216,15 +216,15 @@ int main() {
 							auto a = gr.find_dist(buf.vertex, buf.vertex2);
 							if (buf.out_file && out.is_open()) {
 								out << a.key << "\n";
-								for (int i = a.value.path.GetLength() - 1; i >= 0; --i) {
-									Edge<int> curr_edge = a.value.path.Get(i);
+								for (int i = a.value.Get_path().GetLength() - 1; i >= 0; --i) {
+									Edge<int> curr_edge = a.value.Get_path().Get(i);
 									out << curr_edge.from_id << " " << curr_edge.to_id << " " << curr_edge.weight << "\n";
 								}
 							}
 							else {
 								cout << a.key << "\n";
-								for (int i = a.value.path.GetLength() - 1; i >= 0; --i) {
-									Edge<int> curr_edge = a.value.path.Get(i);
+								for (int i = a.value.Get_path().GetLength() - 1; i >= 0; --i) {
+									Edge<int> curr_edge = a.value.Get_path().Get(i);
 									cout << curr_edge.from_id << " " << curr_edge.to_id << " " << curr_edge.weight << "\n";
 								}
 							}

@@ -41,14 +41,14 @@ TEST(EdgeTest, Edge_test1) {
 }
 
 TEST(EdgeTest, Edge_test2) {
-	Edge<int> edge(4);
+	Edge<int> edge(4, 1, 1, 0);
 	int id_ = edge.id;
 	ASSERT_EQ(id_, 4);
 	ASSERT_EQ(edge.weight, 0);
 }
 
 TEST(EdgeTest, Edge_test3) {
-	Edge<int> edge(4);
+	Edge<int> edge(4, -1, -1, 0);
 	int id_ = edge.id;
 	ASSERT_EQ(id_, 4);
 	ASSERT_EQ(edge.weight, 0);
@@ -116,7 +116,7 @@ TEST(GraphTest, Graph_test5) {
 	gr.Add_edge(5, 6, 2);
 	ASSERT_EQ(gr.Get_edges().GetLength(), 5);
 	ASSERT_EQ(gr.find_connectivity_component().GetLength(), 4);
-	ASSERT_EQ(gr.find_dist(2, 6), 18);
+	ASSERT_EQ(gr.find_dist(2, 6).key, 18);
 }
 
 TEST(GraphTest, Graph_test6) {
@@ -128,7 +128,7 @@ TEST(GraphTest, Graph_test6) {
 	gr.Add_edge(5, 6, 2);
 	ASSERT_EQ(gr.Get_edges().GetLength(), 5);
 	ASSERT_EQ(gr.find_connectivity_component().GetLength(), 4);
-	ASSERT_EQ(gr.find_dist(2, 6), 17);
+	ASSERT_EQ(gr.find_dist(2, 6).key , 17);
 }
 
 TEST(GraphTest, Graph_test7) {
@@ -140,9 +140,8 @@ TEST(GraphTest, Graph_test7) {
 	gr.Add_edge(5, 6, 2);
 	ASSERT_EQ(gr.Get_edges().GetLength(), 5);
 	ASSERT_EQ(gr.find_connectivity_component().GetLength(), 4);
-	ASSERT_EQ(gr.find_dist(2, 6), 18);
+	ASSERT_EQ(gr.find_dist(2, 6).key, 18);
 }
-
 TEST(GraphTest, Graph_test8) {
 	Graph<int> gr(8);
 	gr.Add_edge(0, 1, 6);
@@ -152,5 +151,5 @@ TEST(GraphTest, Graph_test8) {
 	gr.Add_edge(5, 6, 2);
 	ASSERT_EQ(gr.Get_edges().GetLength(), 5);
 	ASSERT_EQ(gr.find_connectivity_component().GetLength(), 4);
-	ASSERT_EQ(gr.find_dist(2, 0), -1);
+	ASSERT_EQ(gr.find_dist(2, 0).key, -1);
 }

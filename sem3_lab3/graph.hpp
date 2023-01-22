@@ -23,6 +23,13 @@ public:
 	}
 
 	Edge(int id_, int from, int to, Tweight weight_) : id(id_), from_id(from), to_id(to), weight(weight_) {}
+
+	Edge(const Edge<Tweight>& ref_edge) {
+		this->id = ref_edge.id;
+		this->from_id = ref_edge.from_id;
+		this->to_id = ref_edge.to_id;
+		this->weight = ref_edge.weight;
+	}
 };
 
 
@@ -47,9 +54,31 @@ public:
 
 template <typename Tweight>
 class Path {
-public:
+private:
 	ArraySequence<Edge<Tweight> > path;
-	int add_edge(Edge<Tweight> a) {
+public:
+	Path() {}
+	Path(const Path<Tweight>& ref_path){
+		this->path = ref_path.path;
+	}
+
+	ArraySequence<Edge<Tweight> > Get_path() {
+		return this->path;
+	}
+	
+	Path<Tweight> Concat_path(Path<Tweight> path2) {
+		ArraySequence<Edge<Tweight> > a = path2.get_path();
+		for (int i = 0; i < a.GetLength(); ++i) {
+			int res = this->path.Append(a.Get(i));
+			if (res == -1) {
+				break;
+			}
+		}
+
+		return *this;
+	}
+
+	int Add_edge(Edge<Tweight> a) {
 		if (path.GetLength() > 0 && path.GetLast().to_id != a.from_id && path.GetLast().to_id != a.to_id) {
 			return -1;
 		}
@@ -57,11 +86,12 @@ public:
 		return 0;
 	}
 };
+
 template <class Tweight>
 std::ostream& operator<< (std::ostream& out, Path<Tweight>& a) {
 	for (int i = 0; i < a.path.GetLength(); ++i) {
 		auto b = a.path.Get(i);
-		cout << b.from_id << " " << b.to_id << " " << b.weight;
+		out << b.from_id << " " << b.to_id << " " << b.weight;
 	}
 	return out;
 }
@@ -83,13 +113,18 @@ public:
 	Graph(const Graph& other) : edges(other.edges), nodes(other.nodes) {}
 
 	ArraySequence<Edge<Tweight> > Get_edges() {
-		return this->edges;
+		ArraySequence<Edge<Tweight> > res = this->edges.getelement();
+		return res;
 	}
+
 
 	ArraySequence<Node> Get_nodes() {
 		return this->nodes;
 	}
 
+	Node Get_node(int index) {
+		return this->nodes.Get(index);
+	}
 	void Add_node() {
 		Node node(id_node++);
 		nodes.Append(node);
@@ -176,7 +211,7 @@ public:
 		ArraySequence<Pair<int, int> > parent = ans.value;
 		int curr_id = to;
 		while (curr_id != -1) {
-			path.add_edge(edges.get(parent.Get(curr_id).value));
+			path.Add_edge(edges.get(parent.Get(curr_id).value));
 			curr_id = parent.Get(curr_id).key;
 		}
 
@@ -239,7 +274,7 @@ public:
 			for (int i = 0; i < nodes.GetLength(); ++i) {
 				for (int j = 0; j < nodes.Get(i).node_edges->GetLength(); ++j) {
 					if (nodes.Get(i).node_edges->Get(j) == id) {
-						nodes.Get(i).node_edges->remove(id);
+						nodes.Get(i).node_edges->remove(j);
 					}
 				}
 			}
@@ -247,6 +282,7 @@ public:
 		}
 		return -1;
 	}
+
 	~Graph() {
 	}
 };
